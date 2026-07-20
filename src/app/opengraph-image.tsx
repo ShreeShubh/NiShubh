@@ -45,7 +45,7 @@ export default function OpenGraphImage() {
               {siteConfig.name}
             </div>
             <div style={{ color: "#475569", display: "flex", fontSize: 38, lineHeight: 1.25, maxWidth: 900 }}>
-              Modern website development and digital experiences by {siteConfig.ownerName}.
+              Modern website development and digital experiences by the NiShubh team.
             </div>
           </div>
           <div style={{ color: "#0f766e", display: "flex", fontSize: 28, fontWeight: 700 }}>

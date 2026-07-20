@@ -5,7 +5,7 @@ Use these prompts one phase at a time. Start with the global session prompt, the
 ## Global Session Prompt
 
 ```text
-You are the senior engineer responsible for building a production-quality freelance website-development business website for Shubham Shree.
+You are the senior engineer responsible for building a production-quality freelance website-development business website for NiShubh.
 
 Read AGENTS.md and the supplied product documentation fully before coding. Work incrementally, inspect the current repository first, and do not overwrite working code unnecessarily.
 
@@ -185,7 +185,7 @@ Add static generation, metadata, breadcrumbs and appropriate CreativeWork/WebSit
 ```text
 Build the /about and /process pages.
 
-About should present me as a MERN/Next.js developer and direct service provider, with an honest professional story, capability groups, working principles, experience summary, image placeholder and CTA. Do not invent employers, certifications or numbers beyond supplied content.
+About should present NiShubh as a MERN/Next.js website and web application provider, with an honest professional story, capability groups, working principles, experience summary, image placeholder and CTA. Do not invent employers, certifications or numbers beyond supplied content.
 
 Process should explain Discovery, Scope & Proposal, UX Direction, Development, QA & Review, Launch and Support. Include client responsibilities, communication expectations, revision boundaries and a CTA.
 
@@ -358,4 +358,3 @@ Return findings grouped by Critical, High, Medium and Low priority across:
 
 For every finding include file/path evidence, why it matters and the smallest reliable fix. Then propose an ordered remediation plan. Wait for the next instruction before applying broad refactors.
 ```
-

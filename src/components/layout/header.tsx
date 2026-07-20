@@ -18,7 +18,7 @@ function isActivePath(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
-function Wordmark() {
+function Wordmark({ isDark = false }: { isDark?: boolean }) {
   return (
     <Link
       aria-label={`${siteConfig.name} home`}
@@ -32,10 +32,20 @@ function Wordmark() {
         NS
       </span>
       <span className="flex min-w-0 flex-col">
-        <span className="truncate text-sm font-bold leading-5 text-foreground">
+        <span
+          className={cn(
+            "truncate text-sm font-bold leading-5 transition-colors",
+            isDark ? "text-background" : "text-foreground",
+          )}
+        >
           {siteConfig.name}
         </span>
-        <span className="hidden text-xs leading-4 text-muted-foreground sm:block">
+        <span
+          className={cn(
+            "hidden text-xs leading-4 transition-colors sm:block",
+            isDark ? "text-background/70" : "text-muted-foreground",
+          )}
+        >
           {siteConfig.tagline}
         </span>
       </span>
@@ -46,6 +56,8 @@ function Wordmark() {
 export function Header() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
+  const [isOverDarkSection, setIsOverDarkSection] = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const menuPanelRef = useRef<HTMLDivElement>(null)
@@ -109,10 +121,55 @@ export function Header() {
     }
   }, [isOpen])
 
+  useEffect(() => {
+    let animationFrame = 0
+
+    function updateHeaderTheme() {
+      window.cancelAnimationFrame(animationFrame)
+      animationFrame = window.requestAnimationFrame(() => {
+        const headerHeight = headerRef.current?.offsetHeight ?? 64
+        const elements = document.elementsFromPoint(
+          window.innerWidth / 2,
+          headerHeight + 1,
+        )
+        const isDark = elements.some((element) => {
+          if (!(element instanceof HTMLElement)) {
+            return false
+          }
+
+          return (
+            element.dataset.headerTheme === "dark" ||
+            element.closest<HTMLElement>('[data-header-theme="dark"]') !== null
+          )
+        })
+
+        setIsOverDarkSection(isDark)
+      })
+    }
+
+    updateHeaderTheme()
+    window.addEventListener("scroll", updateHeaderTheme, { passive: true })
+    window.addEventListener("resize", updateHeaderTheme)
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame)
+      window.removeEventListener("scroll", updateHeaderTheme)
+      window.removeEventListener("resize", updateHeaderTheme)
+    }
+  }, [pathname])
+
   return (
-    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/92 backdrop-blur supports-[backdrop-filter]:bg-background/78">
+    <header
+      className={cn(
+        "sticky top-0 z-40 border-b backdrop-blur transition-colors duration-200",
+        isOverDarkSection
+          ? "border-background/20 bg-foreground/92 supports-[backdrop-filter]:bg-foreground/82"
+          : "border-border/80 bg-background/92 supports-[backdrop-filter]:bg-background/78",
+      )}
+      ref={headerRef}
+    >
       <div className="container flex h-16 items-center justify-between gap-4">
-        <Wordmark />
+        <Wordmark isDark={isOverDarkSection} />
 
         <nav
           aria-label="Primary navigation"
@@ -125,8 +182,14 @@ export function Header() {
               <Link
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "focus-ring rounded-md px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                  isActive && "bg-primary/8 text-primary",
+                  "focus-ring rounded-md px-3 py-2 text-sm font-semibold transition-colors",
+                  isOverDarkSection
+                    ? "text-background/70 hover:bg-background/10 hover:text-background"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                  isActive &&
+                    (isOverDarkSection
+                      ? "bg-primary/15 text-primary"
+                      : "bg-primary/8 text-primary"),
                 )}
                 href={item.href}
                 key={item.href}
@@ -155,7 +218,12 @@ export function Header() {
           aria-controls="mobile-navigation"
           aria-expanded={isOpen}
           aria-label="Open navigation menu"
-          className="focus-ring inline-flex size-11 items-center justify-center rounded-md border border-border bg-surface text-foreground lg:hidden"
+          className={cn(
+            "focus-ring inline-flex size-11 items-center justify-center rounded-md border transition-colors lg:hidden",
+            isOverDarkSection
+              ? "border-background/20 bg-background/10 text-background"
+              : "border-border bg-surface text-foreground",
+          )}
           onClick={() => setIsOpen(true)}
           ref={menuButtonRef}
           type="button"
@@ -178,61 +246,65 @@ export function Header() {
             type="button"
           />
           <div
-            className="absolute right-0 top-0 flex h-dvh w-full max-w-sm flex-col border-l border-border bg-background p-5 shadow-soft"
+            className="absolute inset-y-0 right-0 flex h-dvh w-full flex-col bg-background shadow-soft sm:max-w-sm sm:border-l sm:border-border"
             id="mobile-navigation"
             ref={menuPanelRef}
           >
-            <div className="flex items-center justify-between gap-4">
-              <h2 className="sr-only" id="mobile-navigation-title">
-                Mobile navigation
-              </h2>
-              <Wordmark />
-              <button
-                aria-label="Close navigation menu"
-                className="focus-ring inline-flex size-11 items-center justify-center rounded-md border border-border bg-surface text-foreground"
-                onClick={() => closeMenu()}
-                ref={closeButtonRef}
-                type="button"
-              >
-                <X aria-hidden="true" className="size-5" />
-              </button>
+            <div className="border-b border-border/80">
+              <div className="container flex h-16 items-center justify-between gap-4 sm:w-auto sm:px-5">
+                <h2 className="sr-only" id="mobile-navigation-title">
+                  Mobile navigation
+                </h2>
+                <Wordmark />
+                <button
+                  aria-label="Close navigation menu"
+                  className="focus-ring inline-flex size-11 items-center justify-center rounded-md border border-border bg-surface text-foreground transition-colors hover:border-primary/45 hover:text-primary"
+                  onClick={() => closeMenu()}
+                  ref={closeButtonRef}
+                  type="button"
+                >
+                  <X aria-hidden="true" className="size-5" />
+                </button>
+              </div>
             </div>
 
-            <nav aria-label="Mobile navigation" className="mt-8 grid gap-2">
-              {siteConfig.nav.map((item) => {
-                const isActive = isActivePath(pathname, item.href)
+            <div className="container flex flex-1 flex-col py-6 sm:w-auto sm:px-5">
+              <nav aria-label="Mobile navigation" className="grid gap-2">
+                {siteConfig.nav.map((item) => {
+                  const isActive = isActivePath(pathname, item.href)
 
-                return (
-                  <Link
-                    aria-current={isActive ? "page" : undefined}
-                    className={cn(
-                      "focus-ring rounded-md px-3 py-3 text-base font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                      isActive && "bg-primary/8 text-primary",
-                    )}
-                    href={item.href}
-                    key={item.href}
-                    onClick={() => closeMenu({ restoreFocus: false })}
-                  >
-                    {item.label}
-                  </Link>
-                )
-              })}
-            </nav>
+                  return (
+                    <Link
+                      aria-current={isActive ? "page" : undefined}
+                      className={cn(
+                        "focus-ring rounded-md px-3 py-3 text-base font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+                        isActive && "bg-primary/8 text-primary",
+                      )}
+                      href={item.href}
+                      key={item.href}
+                      onClick={() => closeMenu({ restoreFocus: false })}
+                    >
+                      {item.label}
+                    </Link>
+                  )
+                })}
+              </nav>
 
-            <ButtonLink
-              className="mt-8"
-              href="/contact"
-              {...analyticsAttributes("cta_click", {
-                page: pathname,
-                source: "mobile_header",
-                linkId: "discuss_project",
-              })}
-              onClick={() => closeMenu({ restoreFocus: false })}
-              size="lg"
-            >
-              <MessageCircle aria-hidden="true" className="size-5" />
-              Discuss Project
-            </ButtonLink>
+              <ButtonLink
+                className="mt-8"
+                href="/contact"
+                {...analyticsAttributes("cta_click", {
+                  page: pathname,
+                  source: "mobile_header",
+                  linkId: "discuss_project",
+                })}
+                onClick={() => closeMenu({ restoreFocus: false })}
+                size="lg"
+              >
+                <MessageCircle aria-hidden="true" className="size-5" />
+                Discuss Project
+              </ButtonLink>
+            </div>
           </div>
         </div>
       ) : null}

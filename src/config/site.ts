@@ -1,18 +1,18 @@
 export const siteConfig = {
   name: "NiShubh",
   legalName: "PLACEHOLDER: Legal business name",
-  ownerName: "Shubham Shree",
+  ownerName: "Our Team",
   tagline: "Digital Product Studio",
   title: "NiShubh | Building Modern Digital Experiences",
   description:
-    "NiShubh builds fast, modern and conversion-focused websites and web applications for businesses that need a professional online presence and direct support from the developer.",
+    "NiShubh builds fast, modern and conversion-focused websites and web applications for businesses that need a professional online presence.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com",
   locale: "en",
   contact: {
-    email: "PLACEHOLDER: hello@example.com",
-    phone: "PLACEHOLDER: +91 00000 00000",
-    whatsapp: "PLACEHOLDER: 910000000000",
-    location: "PLACEHOLDER: Service area",
+    email: "hello@example.com",
+    phone: "+91 8000212233",
+    whatsapp: "918000212233",
+    location: "Remote freelance projects across India and worldwide",
   },
   social: {
     github: "PLACEHOLDER: https://github.com/username",

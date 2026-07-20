@@ -33,7 +33,7 @@ import {
 export const metadata: Metadata = buildMetadata({
   title: "About",
   description:
-    "Learn about Shubham Shree, the MERN and Next.js developer behind NiShubh, and the practical working principles behind the service.",
+    "Learn about the MERN and Next.js development approach behind NiShubh and the practical working principles behind the service.",
   path: "/about",
 })
 
@@ -135,7 +135,7 @@ export default function AboutPage() {
           <SectionHeading
             description="A focused capability set for small-business websites, service pages, MVP interfaces and maintainable web applications."
             eyebrow="Capabilities"
-            title="What Shubham can help with"
+            title="What our team can help with"
           />
           <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {capabilityGroups.map((group) => (
@@ -222,15 +222,15 @@ export default function AboutPage() {
         </Container>
       </Section>
 
-      <Section className="bg-foreground text-background">
+      <Section className="bg-foreground text-background" data-header-theme="dark">
         <Container>
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
               <Badge className="border-background/20 bg-background/10 text-background">
-                Work Directly
+                Work With NiShubh
               </Badge>
               <h2 className="text-heading-2 mt-5 max-w-3xl text-background">
-                Need direct development support for a website or web app?
+                Need a modern website or web application experience?
               </h2>
               <p className="text-lead mt-5 max-w-2xl text-background/72">
                 Share your goals, current website and preferred timeline so the

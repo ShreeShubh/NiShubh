@@ -109,8 +109,8 @@ export function Footer() {
                       linkId: "contact_email",
                     })}
                   >
-                    <Mail aria-hidden="true" className="size-4" />
-                    Email
+                    <Mail aria-hidden="true" className="size-4 shrink-0" />
+                    <span>{siteConfig.contact.email}</span>
                   </a>
                 ) : (
                   <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
@@ -128,7 +128,7 @@ export function Footer() {
                     })}
                   >
                     <Phone aria-hidden="true" className="size-4" />
-                    Phone
+                    <span>{siteConfig.contact.phone}</span>
                   </a>
                 ) : (
                   <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
@@ -136,9 +136,9 @@ export function Footer() {
                     Phone placeholder
                   </span>
                 )}
-                <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-                  <MapPin aria-hidden="true" className="size-4" />
-                  {siteConfig.contact.location}
+                <span className="inline-flex items-start gap-2 text-sm leading-6 text-muted-foreground">
+                  <MapPin aria-hidden="true" className="mt-1 size-4 shrink-0" />
+                  <span>{siteConfig.contact.location}</span>
                 </span>
               </div>
             </div>
@@ -176,7 +176,9 @@ export function Footer() {
           <p>
             © {year} {copyrightName}. All rights reserved.
           </p>
-          <p>Direct website development support from {siteConfig.ownerName}.</p>
+          <p>
+            Modern website development for business-focused digital experiences.
+          </p>
         </div>
       </Container>
     </footer>

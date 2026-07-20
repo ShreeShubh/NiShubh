@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This repository is for a production-quality freelance website development and digital services website for Shubham Shree. Treat the product documentation as the source of truth for business goals, page scope, content rules, UX direction, technical architecture, and launch criteria.
+This repository is for a production-quality freelance website development and digital services website for NiShubh. Treat the product documentation as the source of truth for business goals, page scope, content rules, UX direction, technical architecture, and launch criteria.
 
 ## Product Goal
 
@@ -10,7 +10,7 @@ The first release is a sales and trust-building website. Do not add authenticati
 
 ## Working Brand
 
-Use `[Brand Name]` until the final brand, domain, wordmark, logo, favicon, contact details, and social URLs are supplied. A likely launch direction is a personal brand such as `Shubham Shree - MERN & Next.js Developer`.
+Use `[Brand Name]` until the final brand, domain, wordmark, logo, favicon, contact details, and social URLs are supplied. The current launch direction is a brand-led service such as `NiShubh - Modern Website Development`.
 
 Keep the tone professional, practical, clear, and confident. Avoid exaggerated claims such as "best developer" or "guaranteed #1 on Google."
 
@@ -210,7 +210,7 @@ Known project names that may be seeded conservatively:
 
 ### About
 
-Present Shubham as a MERN/Next.js developer and direct service provider. Include an honest professional story, capability groups, working principles, experience summary, image placeholder, and CTA. Do not turn it into a full resume or invent employers, certifications, or numbers.
+Present NiShubh as a MERN/Next.js development service provider. Include an honest professional story, capability groups, working principles, experience summary, image placeholder, and CTA. Do not turn it into a full resume or invent employers, certifications, or numbers.
 
 ### Process
 
@@ -413,4 +413,3 @@ When asked for a review, inspect the complete repository against this file and t
 - Professional email, WhatsApp number, social URLs, and service area.
 - Blog launch decision.
 - Final privacy and terms review.
-

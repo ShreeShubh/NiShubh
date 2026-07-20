@@ -1,6 +1,6 @@
 # NiShubh
 
-Production-quality freelance website development and digital services website for Shubham Shree.
+Production-quality freelance website development and digital services website for NiShubh.
 
 ## Stack
 

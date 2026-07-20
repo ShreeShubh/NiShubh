@@ -44,16 +44,11 @@ export function breadcrumbListSchema(items: { name: string; path: string }[]) {
 
 export function personSchema() {
   return {
-    "@type": "Person",
-    "@id": `${siteConfig.url}/about#person`,
+    "@type": "Organization",
+    "@id": `${siteConfig.url}/about#team`,
     name: siteConfig.ownerName,
     url: absoluteUrl("/about"),
-    jobTitle: "MERN and Next.js Developer",
-    worksFor: {
-      "@type": "Organization",
-      name: siteConfig.name,
-      url: siteConfig.url,
-    },
+    description: `${siteConfig.name} web development team.`,
   }
 }
 
@@ -65,7 +60,7 @@ export function professionalServiceSchema() {
     url: siteConfig.url,
     description: siteConfig.description,
     founder: {
-      "@id": `${siteConfig.url}/about#person`,
+      "@id": `${siteConfig.url}/about#team`,
     },
     serviceType: [
       "Website development",
@@ -120,7 +115,7 @@ export function creativeWorkSchema({
     url,
     description,
     creator: {
-      "@id": `${siteConfig.url}/about#person`,
+      "@id": `${siteConfig.url}/about#team`,
     },
     isPartOf: {
       "@id": `${siteConfig.url}/#website`,

@@ -7,7 +7,7 @@ This checklist captures final values, assets and review items required before la
 - [ ] Confirm final public brand casing: current app source uses `NiShubh`; earlier notes mention `Nishubh`.
 - [ ] Confirm final tagline. Current config displays `Digital Product Studio`; earlier supplied tagline is `Building Modern Digital Experiences.`
 - [ ] Provide final legal business name for `siteConfig.legalName`.
-- [ ] Confirm owner/public representative name and preferred spelling: currently `Shubham Shree`.
+- [ ] Confirm whether the site should remain team/brand-led with `Our Team` and `NiShubh` instead of a personal representative name.
 - [ ] Provide final business description for metadata, footer, schema and hero support copy.
 - [ ] Provide final domain for `NEXT_PUBLIC_SITE_URL` and `siteConfig.url`.
 - [ ] Provide logo or wordmark asset to replace the `NS` placeholder.
@@ -62,7 +62,7 @@ This checklist captures final values, assets and review items required before la
 
 ## Visual Assets
 
-- [ ] Provide professional profile image for Shubham Shree or approve placeholder removal.
+- [ ] Provide team, workspace or brand image asset for the About page, or approve placeholder removal.
 - [ ] Provide project screenshots or mockups for all case studies.
 - [ ] Provide logo/wordmark variants for light and dark use if available.
 - [ ] Provide final social sharing image.

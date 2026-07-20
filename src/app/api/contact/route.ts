@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({
     ok: true,
     message:
-      "Thanks. Your enquiry has been received and Shubham will review the project details.",
+      "Thanks. Your enquiry has been received and the NiShubh team will review the project details.",
     provider: result.provider,
   })
 }

@@ -1,4 +1,4 @@
-export type ProjectType = "client" | "personal" | "concept";
+export type ProjectType = "client" | "employment" | "personal" | "concept";
 
 export type Service = {
   slug: string;

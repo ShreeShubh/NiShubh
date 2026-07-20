@@ -19,11 +19,13 @@ import {
   CardHeader,
   CardTitle,
   Container,
+  FaqItem,
   IconFrame,
   Section,
   SectionHeading,
   TechnologyTag,
 } from "@/components/ui"
+import { ProjectImage } from "@/components/projects/project-image"
 import { siteConfig } from "@/config/site"
 import {
   clientExpectations,
@@ -51,7 +53,7 @@ import {
 export const metadata: Metadata = buildMetadata({
   title: "Modern Website Development",
   description:
-    "NiShubh builds fast, modern and conversion-focused websites and web applications with Next.js, MERN and direct developer support.",
+    "NiShubh builds fast, modern and conversion-focused websites and web applications with Next.js and MERN technology.",
   path: "/",
 })
 
@@ -171,7 +173,6 @@ export default function HomePage() {
               </ButtonLink>
             </div>
             <p className="mt-5 text-sm text-muted-foreground">
-              Direct website development support from {siteConfig.ownerName}.
               Final portfolio facts are being verified before launch.
             </p>
           </div>
@@ -180,17 +181,17 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      <Section className="border-y border-border bg-surface" spacing="tight">
+      <Section className="border-y border-border bg-surface py-3 sm:py-4">
         <Container>
           <h2 className="sr-only">Technology and trust signals</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
             {trustSignals.map((signal) => (
               <div
-                className="flex items-center gap-3 rounded-md border border-border bg-background px-4 py-3"
+                className="flex min-h-10 items-center gap-2 rounded-md border border-border bg-background px-3 py-2"
                 key={signal}
               >
-                <Check aria-hidden="true" className="size-5 text-accent" />
-                <span className="text-sm font-semibold text-foreground">
+                <Check aria-hidden="true" className="size-4 shrink-0 text-accent" />
+                <span className="text-xs font-semibold text-foreground sm:text-sm">
                   {signal}
                 </span>
               </div>
@@ -281,17 +282,28 @@ export default function HomePage() {
           <div className="mt-10 grid gap-6 lg:grid-cols-3">
             {featuredProjects.map((project) => (
               <Card className="overflow-hidden p-0" key={project.slug}>
-                <div className="aspect-[16/10] border-b border-border bg-muted p-5">
-                  <div className="h-full rounded-md border border-border bg-surface p-4">
-                    <div className="h-3 w-24 rounded-full bg-primary/20" />
-                    <div className="mt-5 h-8 w-3/4 rounded-md bg-foreground/85" />
-                    <div className="mt-4 grid grid-cols-3 gap-2">
-                      <div className="h-12 rounded bg-muted" />
-                      <div className="h-12 rounded bg-muted" />
-                      <div className="h-12 rounded bg-muted" />
+                <ProjectImage
+                  alt={cleanPlaceholder(
+                    project.gallery[0]?.alt ?? "",
+                    `${project.title} project preview`,
+                  )}
+                  className="aspect-[16/10] border-b border-border bg-muted"
+                  fallback={
+                    <div className="aspect-[16/10] border-b border-border bg-muted p-5">
+                      <div className="h-full rounded-md border border-border bg-surface p-4">
+                        <div className="h-3 w-24 rounded-full bg-primary/20" />
+                        <div className="mt-5 h-8 w-3/4 rounded-md bg-foreground/85" />
+                        <div className="mt-4 grid grid-cols-3 gap-2">
+                          <div className="h-12 rounded bg-muted" />
+                          <div className="h-12 rounded bg-muted" />
+                          <div className="h-12 rounded bg-muted" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  }
+                  priority={project.slug === "neelima-studio"}
+                  src={project.coverImage}
+                />
                 <div className="p-6">
                   <Badge>{projectTypeLabels[project.projectType]}</Badge>
                   <h3 className="mt-4 text-xl font-bold text-foreground">
@@ -361,16 +373,22 @@ export default function HomePage() {
             eyebrow="Process"
             title="How projects move from idea to production"
           />
-          <div className="mt-10 grid gap-4 lg:grid-cols-7">
+          <div
+            aria-label="Project process steps"
+            className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4"
+          >
             {processSteps.map((step, index) => (
-              <Card className="p-5" key={step.slug}>
+              <Card
+                className="flex aspect-square w-[min(76vw,14rem)] shrink-0 snap-start flex-col p-5"
+                key={step.slug}
+              >
                 <span className="text-sm font-bold text-primary">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <h3 className="mt-3 text-base font-bold text-foreground">
+                <h3 className="mt-5 text-lg font-bold leading-tight text-foreground">
                   {step.title}
                 </h3>
-                <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                <p className="mt-3 text-xs leading-5 text-muted-foreground">
                   {step.summary}
                 </p>
               </Card>
@@ -443,28 +461,22 @@ export default function HomePage() {
             eyebrow="FAQ"
             title="Common questions before starting"
           />
-          <div className="mt-10 grid gap-4 lg:grid-cols-2">
+          <div className="mt-10 grid items-start gap-4 lg:grid-cols-2">
             {displayedFaqs.map((faq) => (
-              <details
-                className="group rounded-lg border border-border bg-surface p-5 shadow-card"
-                key={faq.slug}
-              >
-                <summary className="focus-ring cursor-pointer rounded-sm text-base font-bold text-foreground marker:text-primary">
-                  {faq.question}
-                </summary>
+              <FaqItem key={faq.slug} question={faq.question}>
                 <p className="text-body mt-4 text-muted-foreground">
                   {cleanPlaceholder(
                     faq.answer,
                     "This answer will be finalized with verified pricing, timeline or policy details before launch.",
                   )}
                 </p>
-              </details>
+              </FaqItem>
             ))}
           </div>
         </Container>
       </Section>
 
-      <Section className="bg-foreground text-background">
+      <Section className="bg-foreground text-background" data-header-theme="dark">
         <Container>
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>

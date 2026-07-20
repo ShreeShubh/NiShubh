@@ -167,7 +167,7 @@ export default function ServicesPage() {
         </Container>
       </Section>
 
-      <Section className="bg-foreground text-background">
+      <Section className="bg-foreground text-background" data-header-theme="dark">
         <Container>
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>

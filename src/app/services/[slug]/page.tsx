@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
   Container,
+  FaqItem,
   Section,
   SectionHeading,
   TechnologyTag,
@@ -382,28 +383,22 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
             eyebrow="FAQ"
             title="Questions about this service"
           />
-          <div className="mt-10 grid gap-4 lg:grid-cols-2">
+          <div className="mt-10 grid items-start gap-4 lg:grid-cols-2">
             {serviceFaqs.map((faq) => (
-              <details
-                className="group rounded-lg border border-border bg-surface p-5 shadow-card"
-                key={faq.slug}
-              >
-                <summary className="focus-ring cursor-pointer rounded-sm text-base font-bold text-foreground marker:text-primary">
-                  {faq.question}
-                </summary>
+              <FaqItem key={faq.slug} question={faq.question}>
                 <p className="text-body mt-4 text-muted-foreground">
                   {displayText(
                     faq.answer,
                     "This answer will be finalized with verified pricing, timeline or policy details before launch.",
                   )}
                 </p>
-              </details>
+              </FaqItem>
             ))}
           </div>
         </Container>
       </Section>
 
-      <Section className="bg-foreground text-background">
+      <Section className="bg-foreground text-background" data-header-theme="dark">
         <Container>
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>

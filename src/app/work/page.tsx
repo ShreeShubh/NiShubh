@@ -15,6 +15,7 @@ import {
   SectionHeading,
   TechnologyTag,
 } from "@/components/ui"
+import { ProjectImage } from "@/components/projects/project-image"
 import { getFeaturedProjects, projects, projectTypeLabels } from "@/content"
 import { analyticsAttributes } from "@/lib/analytics"
 import { buildMetadata } from "@/lib/metadata"
@@ -36,29 +37,47 @@ function displayText(value: string, fallback: string) {
   return value.includes("PLACEHOLDER") ? fallback : value
 }
 
-function ProjectPreview({ title }: { title: string }) {
+function ProjectPreview({
+  title,
+  src,
+  alt,
+  priority = false,
+}: {
+  title: string
+  src: string
+  alt: string
+  priority?: boolean
+}) {
   return (
-    <div
-      aria-label={`${title} project visual placeholder`}
-      className="aspect-[16/10] border-b border-border bg-muted p-5"
-      role="img"
-    >
-      <div className="h-full rounded-md border border-border bg-surface p-4">
-        <div className="flex items-center gap-2">
-          <span className="size-2 rounded-full bg-primary/60" />
-          <span className="size-2 rounded-full bg-accent/60" />
-          <span className="h-2 w-20 rounded-full bg-muted" />
+    <ProjectImage
+      alt={alt}
+      className="aspect-[16/10] border-b border-border bg-muted"
+      fallback={
+        <div
+          aria-label={`${title} project visual placeholder`}
+          className="aspect-[16/10] border-b border-border bg-muted p-5"
+          role="img"
+        >
+          <div className="h-full rounded-md border border-border bg-surface p-4">
+            <div className="flex items-center gap-2">
+              <span className="size-2 rounded-full bg-primary/60" />
+              <span className="size-2 rounded-full bg-accent/60" />
+              <span className="h-2 w-20 rounded-full bg-muted" />
+            </div>
+            <div className="mt-6 h-7 w-3/4 rounded-md bg-foreground/85" />
+            <div className="mt-4 grid grid-cols-3 gap-2">
+              <div className="h-12 rounded bg-muted" />
+              <div className="h-12 rounded bg-muted" />
+              <div className="h-12 rounded bg-muted" />
+            </div>
+            <div className="mt-4 h-3 w-full rounded-full bg-muted" />
+            <div className="mt-2 h-3 w-2/3 rounded-full bg-muted" />
+          </div>
         </div>
-        <div className="mt-6 h-7 w-3/4 rounded-md bg-foreground/85" />
-        <div className="mt-4 grid grid-cols-3 gap-2">
-          <div className="h-12 rounded bg-muted" />
-          <div className="h-12 rounded bg-muted" />
-          <div className="h-12 rounded bg-muted" />
-        </div>
-        <div className="mt-4 h-3 w-full rounded-full bg-muted" />
-        <div className="mt-2 h-3 w-2/3 rounded-full bg-muted" />
-      </div>
-    </div>
+      }
+      priority={priority}
+      src={src}
+    />
   )
 }
 
@@ -174,7 +193,15 @@ export default function WorkPage() {
           <div className="mt-10 grid gap-6 lg:grid-cols-3">
             {featuredProjects.map((project) => (
               <Card className="overflow-hidden p-0" key={project.slug}>
-                <ProjectPreview title={project.title} />
+                <ProjectPreview
+                  alt={displayText(
+                    project.gallery[0]?.alt ?? "",
+                    `${project.title} project preview`,
+                  )}
+                  priority={project.slug === "neelima-studio"}
+                  src={project.coverImage}
+                  title={project.title}
+                />
                 <div className="p-6">
                   <Badge>{projectTypeLabels[project.projectType]}</Badge>
                   <h2 className="mt-4 text-xl font-bold text-foreground">

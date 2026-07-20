@@ -1,9 +1,9 @@
 export const aboutProfile = {
-  title: "MERN and Next.js developer offering direct website development support.",
+  title: "MERN and Next.js development for modern websites.",
   summary:
-    "Shubham Shree builds modern websites and web applications through NiShubh, with a focus on practical planning, responsive interfaces, clean implementation and clear handover.",
+    "NiShubh builds modern websites and web applications with a focus on practical planning, responsive interfaces, clean implementation and clear handover.",
   story:
-    "NiShubh is positioned as a direct development service rather than a large agency. The goal is simple: help businesses turn unclear or outdated digital presence into fast, structured and maintainable web experiences.",
+    "NiShubh is positioned as a focused website and web application studio. The goal is simple: help businesses turn unclear or outdated digital presence into fast, structured and maintainable web experiences.",
 } as const
 
 export const capabilityGroups = [

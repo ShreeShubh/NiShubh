@@ -43,7 +43,7 @@ function whatsappHref() {
   }
 
   const message = encodeURIComponent(
-    `Hi ${siteConfig.ownerName}, I want to discuss a website or web application project with ${siteConfig.name}.`,
+    `Hi ${siteConfig.name}, I want to discuss a website or web application project.`,
   )
 
   return `https://wa.me/${number}?text=${message}`

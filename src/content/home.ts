@@ -2,13 +2,13 @@ export const trustSignals = [
   "Next.js and MERN capability",
   "Mobile-first implementation",
   "SEO-aware structure",
-  "Direct developer communication",
+  "Clear project communication",
 ] as const;
 
 export const whyWorkWithMe = [
   {
-    title: "Direct collaboration",
-    description: "You work with the developer handling the build, so decisions and tradeoffs stay clear.",
+    title: "Clear collaboration",
+    description: "Project decisions, scope and tradeoffs stay visible throughout the build.",
   },
   {
     title: "Full-stack awareness",

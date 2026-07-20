@@ -15,6 +15,7 @@ import {
   SectionHeading,
   TechnologyTag,
 } from "@/components/ui"
+import { ProjectImage } from "@/components/projects/project-image"
 import {
   getProjectBySlug,
   projectTypeLabels,
@@ -151,37 +152,52 @@ function CaseStudyJsonLd({ project }: { project: Project }) {
 
 function ProjectMedia({
   title,
+  src,
   alt,
   caption,
+  priority = false,
 }: {
   title: string
+  src: string
   alt: string
   caption?: string
+  priority?: boolean
 }) {
+  const fallbackAlt = displayText(alt, `${title} screenshot placeholder`)
+
   return (
     <figure className="overflow-hidden rounded-lg border border-border bg-surface shadow-card">
-      <div
-        aria-label={displayText(alt, `${title} screenshot placeholder`)}
-        className="aspect-[16/10] bg-muted p-5"
-        role="img"
-      >
-        <div className="flex h-full flex-col rounded-md border border-border bg-background p-5">
-          <div className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-primary/60" />
-            <span className="size-2 rounded-full bg-accent/60" />
-            <span className="h-2 w-20 rounded-full bg-muted" />
+      <ProjectImage
+        alt={fallbackAlt}
+        className="aspect-[16/10] bg-muted"
+        fallback={
+          <div
+            aria-label={fallbackAlt}
+            className="aspect-[16/10] bg-muted p-5"
+            role="img"
+          >
+            <div className="flex h-full flex-col rounded-md border border-border bg-background p-5">
+              <div className="flex items-center gap-2">
+                <span className="size-2 rounded-full bg-primary/60" />
+                <span className="size-2 rounded-full bg-accent/60" />
+                <span className="h-2 w-20 rounded-full bg-muted" />
+              </div>
+              <div className="mt-8 flex items-center gap-3">
+                <ImageIcon aria-hidden="true" className="size-6 text-primary" />
+                <div className="h-6 w-3/5 rounded-md bg-foreground/85" />
+              </div>
+              <div className="mt-auto grid grid-cols-3 gap-3">
+                <div className="h-16 rounded bg-muted" />
+                <div className="h-16 rounded bg-muted" />
+                <div className="h-16 rounded bg-muted" />
+              </div>
+            </div>
           </div>
-          <div className="mt-8 flex items-center gap-3">
-            <ImageIcon aria-hidden="true" className="size-6 text-primary" />
-            <div className="h-6 w-3/5 rounded-md bg-foreground/85" />
-          </div>
-          <div className="mt-auto grid grid-cols-3 gap-3">
-            <div className="h-16 rounded bg-muted" />
-            <div className="h-16 rounded bg-muted" />
-            <div className="h-16 rounded bg-muted" />
-          </div>
-        </div>
-      </div>
+        }
+        priority={priority}
+        sizes="(min-width: 1024px) 960px, 100vw"
+        src={src}
+      />
       <figcaption className="border-t border-border px-5 py-4 text-sm text-muted-foreground">
         {displayText(
           caption ?? "",
@@ -298,6 +314,8 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
           <ProjectMedia
             alt={project.gallery[0]?.alt ?? `${project.title} project preview`}
             caption={project.gallery[0]?.caption}
+            priority
+            src={project.gallery[0]?.src ?? project.coverImage}
             title={project.title}
           />
         </Container>
@@ -447,6 +465,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
                 alt={image.alt}
                 caption={image.caption}
                 key={image.src}
+                src={image.src}
                 title={project.title}
               />
             ))}
@@ -541,7 +560,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         </Container>
       </Section>
 
-      <Section className="bg-foreground text-background">
+      <Section className="bg-foreground text-background" data-header-theme="dark">
         <Container>
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
