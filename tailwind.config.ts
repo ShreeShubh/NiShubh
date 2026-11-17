@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/app/**/*.{ts,tsx}",
     "./src/components/**/*.{ts,tsx}",
@@ -43,8 +44,8 @@ const config: Config = {
         "2xl": "calc(var(--radius) + 8px)",
       },
       boxShadow: {
-        card: "0 1px 2px rgb(15 23 42 / 0.06), 0 14px 40px -28px rgb(15 23 42 / 0.35)",
-        soft: "0 18px 60px -36px rgb(15 23 42 / 0.35)",
+        card: "var(--shadow-card)",
+        soft: "var(--shadow-soft)",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "Inter", "system-ui", "sans-serif"],

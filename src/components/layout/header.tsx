@@ -4,7 +4,9 @@ import { Menu, MessageCircle, X } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
+import { createPortal } from "react-dom"
 
+import { ThemeToggle } from "@/components/layout/theme-toggle"
 import { ButtonLink } from "@/components/ui"
 import { siteConfig } from "@/config/site"
 import { analyticsAttributes } from "@/lib/analytics"
@@ -113,11 +115,21 @@ export function Header() {
       }
     }
 
+    const desktopNav = window.matchMedia("(min-width: 1024px)")
+
+    function handleDesktopNav(event: MediaQueryListEvent) {
+      if (event.matches) {
+        closeMenu({ restoreFocus: false })
+      }
+    }
+
     document.addEventListener("keydown", handleKeyDown)
+    desktopNav.addEventListener("change", handleDesktopNav)
 
     return () => {
       document.body.style.overflow = previousOverflow
       document.removeEventListener("keydown", handleKeyDown)
+      desktopNav.removeEventListener("change", handleDesktopNav)
     }
   }, [isOpen])
 
@@ -163,13 +175,31 @@ export function Header() {
       className={cn(
         "sticky top-0 z-40 border-b backdrop-blur transition-colors duration-200",
         isOverDarkSection
-          ? "border-background/20 bg-foreground/92 supports-[backdrop-filter]:bg-foreground/82"
-          : "border-border/80 bg-background/92 supports-[backdrop-filter]:bg-background/78",
+          ? "border-background/20 bg-[hsl(var(--color-foreground)/0.92)] supports-[backdrop-filter]:bg-[hsl(var(--color-foreground)/0.82)]"
+          : "border-border/80 bg-[hsl(var(--color-background)/0.92)] supports-[backdrop-filter]:bg-[hsl(var(--color-background)/0.78)]",
       )}
       ref={headerRef}
     >
-      <div className="container flex h-16 items-center justify-between gap-4">
-        <Wordmark isDark={isOverDarkSection} />
+      <div className="container flex h-16 items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-2">
+          <button
+            aria-controls="mobile-navigation"
+            aria-expanded={isOpen}
+            aria-label="Open navigation menu"
+            className={cn(
+              "focus-ring inline-flex size-11 shrink-0 items-center justify-center rounded-md border transition-colors lg:hidden",
+              isOverDarkSection
+                ? "border-background/20 bg-background/10 text-background"
+                : "border-border bg-surface text-foreground",
+            )}
+            onClick={() => setIsOpen(true)}
+            ref={menuButtonRef}
+            type="button"
+          >
+            <Menu aria-hidden="true" className="size-5" />
+          </button>
+          <Wordmark isDark={isOverDarkSection} />
+        </div>
 
         <nav
           aria-label="Primary navigation"
@@ -188,7 +218,7 @@ export function Header() {
                     : "text-muted-foreground hover:bg-muted hover:text-foreground",
                   isActive &&
                     (isOverDarkSection
-                      ? "bg-primary/15 text-primary"
+                      ? "bg-primary/15 text-[hsl(var(--color-brand))]"
                       : "bg-primary/8 text-primary"),
                 )}
                 href={item.href}
@@ -200,8 +230,13 @@ export function Header() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <ThemeToggle
+            className={cn(isOpen && "invisible lg:visible")}
+            tone={isOverDarkSection ? "inverse" : "default"}
+          />
           <ButtonLink
+            className="hidden lg:inline-flex"
             href="/contact"
             {...analyticsAttributes("cta_click", {
               page: pathname,
@@ -213,101 +248,87 @@ export function Header() {
             Discuss Project
           </ButtonLink>
         </div>
-
-        <button
-          aria-controls="mobile-navigation"
-          aria-expanded={isOpen}
-          aria-label="Open navigation menu"
-          className={cn(
-            "focus-ring inline-flex size-11 items-center justify-center rounded-md border transition-colors lg:hidden",
-            isOverDarkSection
-              ? "border-background/20 bg-background/10 text-background"
-              : "border-border bg-surface text-foreground",
-          )}
-          onClick={() => setIsOpen(true)}
-          ref={menuButtonRef}
-          type="button"
-        >
-          <Menu aria-hidden="true" className="size-5" />
-        </button>
       </div>
 
-      {isOpen ? (
-        <div
-          aria-labelledby="mobile-navigation-title"
-          aria-modal="true"
-          className="fixed inset-0 z-50 lg:hidden"
-          role="dialog"
-        >
-          <button
-            aria-label="Close navigation menu"
-            className="absolute inset-0 bg-foreground/30"
-            onClick={() => closeMenu()}
-            type="button"
-          />
-          <div
-            className="absolute inset-y-0 right-0 flex h-dvh w-full flex-col bg-background shadow-soft sm:max-w-sm sm:border-l sm:border-border"
-            id="mobile-navigation"
-            ref={menuPanelRef}
-          >
-            <div className="border-b border-border/80">
-              <div className="container flex h-16 items-center justify-between gap-4 sm:w-auto sm:px-5">
-                <h2 className="sr-only" id="mobile-navigation-title">
-                  Mobile navigation
-                </h2>
-                <Wordmark />
-                <button
-                  aria-label="Close navigation menu"
-                  className="focus-ring inline-flex size-11 items-center justify-center rounded-md border border-border bg-surface text-foreground transition-colors hover:border-primary/45 hover:text-primary"
-                  onClick={() => closeMenu()}
-                  ref={closeButtonRef}
-                  type="button"
-                >
-                  <X aria-hidden="true" className="size-5" />
-                </button>
-              </div>
-            </div>
-
-            <div className="container flex flex-1 flex-col py-6 sm:w-auto sm:px-5">
-              <nav aria-label="Mobile navigation" className="grid gap-2">
-                {siteConfig.nav.map((item) => {
-                  const isActive = isActivePath(pathname, item.href)
-
-                  return (
-                    <Link
-                      aria-current={isActive ? "page" : undefined}
-                      className={cn(
-                        "focus-ring rounded-md px-3 py-3 text-base font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                        isActive && "bg-primary/8 text-primary",
-                      )}
-                      href={item.href}
-                      key={item.href}
-                      onClick={() => closeMenu({ restoreFocus: false })}
-                    >
-                      {item.label}
-                    </Link>
-                  )
-                })}
-              </nav>
-
-              <ButtonLink
-                className="mt-8"
-                href="/contact"
-                {...analyticsAttributes("cta_click", {
-                  page: pathname,
-                  source: "mobile_header",
-                  linkId: "discuss_project",
-                })}
-                onClick={() => closeMenu({ restoreFocus: false })}
-                size="lg"
+      {isOpen
+        ? createPortal(
+            <div
+              aria-labelledby="mobile-navigation-title"
+              aria-modal="true"
+              className="fixed inset-0 z-[60] lg:hidden"
+              role="dialog"
+            >
+              <button
+                aria-label="Close navigation menu"
+                className="mobile-drawer-overlay absolute inset-0 bg-foreground/30 dark:bg-[hsl(222_47%_4%/0.72)]"
+                onClick={() => closeMenu()}
+                type="button"
+              />
+              <div
+                className="mobile-drawer absolute inset-y-0 left-0 flex h-dvh w-[min(19.5rem,calc(100%-3.25rem))] flex-col border-r border-border bg-background shadow-soft"
+                id="mobile-navigation"
+                ref={menuPanelRef}
               >
-                <MessageCircle aria-hidden="true" className="size-5" />
-                Discuss Project
-              </ButtonLink>
-            </div>
-          </div>
-        </div>
-      ) : null}
+                <div className="border-b border-border/80">
+                  <div className="container flex h-16 items-center gap-2">
+                    <button
+                      aria-label="Close navigation menu"
+                      className="focus-ring inline-flex size-11 shrink-0 items-center justify-center rounded-md border border-border bg-surface text-foreground transition-colors hover:border-primary/45 hover:text-primary"
+                      onClick={() => closeMenu()}
+                      ref={closeButtonRef}
+                      type="button"
+                    >
+                      <X aria-hidden="true" className="size-5" />
+                    </button>
+                    <h2 className="min-w-0 truncate text-sm font-bold text-foreground" id="mobile-navigation-title">
+                      Menu
+                    </h2>
+                    <ThemeToggle className="ml-auto" />
+                  </div>
+                </div>
+
+                <div className="flex flex-1 flex-col px-4 py-5">
+                  <nav aria-label="Mobile navigation" className="grid gap-1">
+                    {siteConfig.nav.map((item) => {
+                      const isActive = isActivePath(pathname, item.href)
+
+                      return (
+                        <Link
+                          aria-current={isActive ? "page" : undefined}
+                          className={cn(
+                            "focus-ring rounded-md px-3 py-3 text-base font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+                            isActive && "bg-primary/8 text-primary",
+                          )}
+                          href={item.href}
+                          key={item.href}
+                          onClick={() => closeMenu({ restoreFocus: false })}
+                        >
+                          {item.label}
+                        </Link>
+                      )
+                    })}
+                  </nav>
+
+                  <ButtonLink
+                    className="mt-auto"
+                    href="/contact"
+                    {...analyticsAttributes("cta_click", {
+                      page: pathname,
+                      source: "mobile_header",
+                      linkId: "discuss_project",
+                    })}
+                    onClick={() => closeMenu({ restoreFocus: false })}
+                    size="lg"
+                  >
+                    <MessageCircle aria-hidden="true" className="size-5" />
+                    Discuss Project
+                  </ButtonLink>
+                </div>
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </header>
   )
 }

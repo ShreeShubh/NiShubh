@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: light;
   --color-background: 210 33% 98%;
   --color-foreground: 222 47% 11%;
   --color-surface: 0 0% 100%;
@@ -11,13 +12,34 @@
   --color-muted-foreground: 215 16% 38%;
   --color-border: 214 32% 88%;
   --color-ring: 220 78% 43%;
+  --color-brand: 220 78% 43%;
   --color-primary: 220 78% 43%;
   --color-primary-foreground: 210 40% 98%;
   --color-accent: 174 72% 34%;
   --color-accent-foreground: 210 40% 98%;
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.06), 0 14px 40px -28px rgb(15 23 42 / 0.35);
+  --shadow-soft: 0 18px 60px -36px rgb(15 23 42 / 0.35);
   --radius: 0.875rem;
   --space-section: clamp(4rem, 8vw, 7rem);
   --space-section-tight: clamp(3rem, 6vw, 5rem);
+}
+
+.dark {
+  color-scheme: dark;
+  --color-background: 222 47% 7%;
+  --color-foreground: 210 33% 96%;
+  --color-surface: 222 38% 11%;
+  --color-surface-strong: 220 30% 15%;
+  --color-muted: 218 26% 17%;
+  --color-muted-foreground: 215 18% 74%;
+  --color-border: 217 24% 30%;
+  --color-ring: 220 85% 68%;
+  --color-primary: 220 85% 68%;
+  --color-primary-foreground: 222 47% 9%;
+  --color-accent: 174 58% 48%;
+  --color-accent-foreground: 222 47% 8%;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.45), 0 18px 44px -22px rgb(0 0 0 / 0.7);
+  --shadow-soft: 0 22px 60px -28px rgb(0 0 0 / 0.72);
 }
 
 * {
@@ -27,6 +49,7 @@
 html {
   min-height: 100%;
   scroll-behavior: smooth;
+  background: hsl(var(--color-background));
 }
 
 body {
@@ -58,6 +81,10 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+input[type="checkbox"] {
+  accent-color: hsl(var(--color-primary));
 }
 
 ::selection {
@@ -188,6 +215,14 @@ select {
   .skip-link:focus {
     transform: translateY(0);
   }
+
+  .mobile-drawer-overlay {
+    animation: overlay-in 180ms ease;
+  }
+
+  .mobile-drawer {
+    animation: drawer-in-left 240ms ease;
+  }
 }
 
 @keyframes reveal-up {
@@ -199,5 +234,25 @@ select {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drawer-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
   }
 }

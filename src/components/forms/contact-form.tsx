@@ -27,7 +27,7 @@ const inputClasses =
 
 const labelClasses = "text-sm font-bold text-foreground"
 const hintClasses = "mt-2 text-sm leading-6 text-muted-foreground"
-const errorClasses = "mt-2 text-sm font-semibold text-red-700"
+const errorClasses = "mt-2 text-sm font-semibold text-red-700 dark:text-red-300"
 
 function describedBy(...ids: Array<string | undefined>) {
   const value = ids.filter(Boolean).join(" ")
@@ -397,7 +397,7 @@ export function ContactForm({ defaultService, whatsappHref }: ContactFormProps) 
           className={
             status === "success"
               ? "rounded-md border border-accent/20 bg-accent/10 p-4 text-sm font-semibold text-accent"
-              : "rounded-md border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700"
+              : "rounded-md border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700 dark:border-red-400/30 dark:bg-red-950/40 dark:text-red-200"
           }
           role="status"
         >
